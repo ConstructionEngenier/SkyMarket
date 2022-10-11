@@ -1,24 +1,61 @@
-from enum import Enum
-
 from django.contrib.auth.models import AbstractBaseUser, AbstractUser
 from django.db import models
-from skymarket.users.managers import UserManager
+from users.managers import UserManager
 from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.translation import gettext_lazy as _
 
 
-class UserRoles(Enum):
-    USER = "user"
-    ADMIN = "admin"
+class UserRoles:
+    USER = "Пользователь"
+    ADMIN = "Администратор"
+    ROLES = [
+        (USER, "Пользователь"),
+        (ADMIN, "Администратор"),
+    ]
 
 
 class User(AbstractBaseUser):
+    email = models.EmailField(
+        unique=True,
+        max_length=100,
+        help_text="Укажите электронную почту"
+    )
+
+    first_name = models.CharField(
+        max_length=200,
+        verbose_name="Имя",
+        help_text="Введите имя"
+        )
+
+    last_name = models.CharField(
+        max_length=200,
+        verbose_name="Фамилия",
+        help_text="Введите фамилию"
+        )
+
+    phone = PhoneNumberField(
+        verbose_name="Телефон для связи",
+        help_text="Укажите телефон для связи"
+    )
+
+    role = models.CharField(
+        max_length=13,
+        choices=UserRoles.ROLES,
+        default=UserRoles.USER,
+        verbose_name="Роль пользователя",
+        help_text="Укажите роль"
+    )
+
+    is_active = models.BooleanField(
+        verbose_name="Аккаунт активен"
+    )
+
     # эта константа определяет поле для логина пользователя
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
 
     # эта константа содержит список с полями,
     # которые необходимо заполнить при создании пользователя
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone', "role"]
+    REQUIRED_FIELDS = ["first_name", "last_name", "phone", "role"]
 
     @property
     def is_superuser(self):
