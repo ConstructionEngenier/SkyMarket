@@ -41,10 +41,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "corsheaders",
     "rest_framework_swagger",
     "rest_framework",
     "djoser",
+    "corsheaders",
     "users",
     "ads",
     "redoc",
@@ -89,10 +89,12 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
 }
-# TODO здесь мы настраиваем Djoser
+
+AUTH_USER_MODEL = 'users.User'
+
 DJOSER = {
     'SERIALIZERS': {
-        'user_create': 'users.serializers.UserRegistrationSerializer'
+        'user_create': 'users.serializers.UserRegistrationSerializer',
     },
     'LOGIN_FIELD': 'email'
 }
