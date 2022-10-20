@@ -43,8 +43,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework_swagger",
     "rest_framework",
+    "rest_framework_simplejwt",
     "djoser",
     "corsheaders",
+    "django_filters",
     "users",
     "ads",
     "redoc",
@@ -88,6 +90,9 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
+    'DEFAULT_PERMISSION_CLASSES': [
+       'rest_framework.permissions.AllowAny',
+]
 }
 
 AUTH_USER_MODEL = 'users.User'
@@ -95,6 +100,7 @@ AUTH_USER_MODEL = 'users.User'
 DJOSER = {
     'SERIALIZERS': {
         'user_create': 'users.serializers.UserRegistrationSerializer',
+        'current_user': 'users.serializers.CurrentUserSerializer',
     },
     'LOGIN_FIELD': 'email'
 }
